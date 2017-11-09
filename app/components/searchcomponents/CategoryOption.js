@@ -3,29 +3,40 @@ import React, { Component } from 'react'
 import { StyleSheet, Text, View, Picker } from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import * as searchActions from '../../actions/searchActions'
+
 
 class CategoryOption extends Component {
   constructor(props) {
    super(props);
-
-   this.state = {category: 'All'}
  }
 
   render() {
     return (
         <View style={styles.container}>
           <Dropdown
-             value={this.state.category}
+             value={this.props.searchCategory}
              label='Category'
              data={categoryOptions}
-             onChangeText={(category) => this.setState({category})}
+             onChangeText={(category) => this.props.changeSearchCategory(category)}
            />
-          <Text>{this.state.category}</Text>
+          <Text>{this.props.searchCategory}</Text>
         </View>
 
 
     )
   }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(searchActions, dispatch)
+}
+
+function mapStateToProps() {
+  return {}
 }
 
 const styles = StyleSheet.create({
@@ -38,9 +49,9 @@ const styles = StyleSheet.create({
 })
 
 const categoryOptions = [
-  {value: 'All'},
-  {value: 'Chinese'},
-  {value: 'Japanese'},
+  {label: 'All', value: 'restaurants'},
+  {label: 'Chinese', value: 'chinese'},
+  {label: 'Japanese', value: 'japanese'},
 ]
 
-export default CategoryOption
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryOption)

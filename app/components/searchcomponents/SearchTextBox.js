@@ -3,13 +3,15 @@ import React, { Component } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { SearchBar } from 'react-native-elements'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import * as searchActions from '../../actions/searchActions'
 
 class SearchTextBox extends Component {
   constructor(props) {
    super(props);
-   this.state = {
-     searchText: ""
-   }
+
  }
 
   render() {
@@ -17,17 +19,24 @@ class SearchTextBox extends Component {
         <View style={styles.container}>
           <SearchBar
             lightTheme
-            value = {this.state.searchText}
-            onChangeText = {(searchText) => this.setState({searchText})}
+            value = {this.props.searchTerm}
+            onChangeText = {(searchText) => this.props.changeSearchTerm(searchText)}
             placeholder = 'Search'
             clearIcon
           />
-          <Text>{this.state.searchText}</Text>
-          {console.log(this.state.searchText)}
+          <Text>{this.props.searchTerm}</Text>
         </View>
 
     )
   }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(searchActions, dispatch)
+}
+
+function mapStateToProps() {
+  return {}
 }
 
 const styles = StyleSheet.create({
@@ -39,4 +48,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default SearchTextBox
+export default connect(mapStateToProps, mapDispatchToProps)(SearchTextBox)

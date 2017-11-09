@@ -1,6 +1,7 @@
 'use strict'
 import React, { Component } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { connect } from 'react-redux'
 import SearchTextBox from '../components/searchcomponents/SearchTextBox'
 import CategoryOption from '../components/searchcomponents/CategoryOption'
 import DistanceOption from '../components/searchcomponents/DistanceOption'
@@ -14,14 +15,20 @@ class SearchScreen extends Component {
     return (
         <View style={styles.container}>
           <Text>SearchScreen</Text>
-          <SearchTextBox />
-          <CategoryOption />
-          <DistanceOption />
+          <SearchTextBox searchTerm={this.props.search.searchTerm}/>
+          <CategoryOption searchCategory={this.props.search.searchCategory}/>
+          <DistanceOption searchDistance={this.props.search.searchDistance}/>
           <SearchButton />
-          <SearchResults />
+          <SearchResults searchResults={this.props.search.searchResults}/>
         </View>
 
     )
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    search: state.search
   }
 }
 
@@ -34,4 +41,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default SearchScreen
+export default connect(mapStateToProps)(SearchScreen)

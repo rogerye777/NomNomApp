@@ -3,28 +3,39 @@ import React, { Component } from 'react'
 import { StyleSheet, Text, View, Picker } from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import * as searchActions from '../../actions/searchActions'
 
 class DistanceOption extends Component {
   constructor(props) {
    super(props);
 
-   this.state = { distance: '30'};
  }
 
   render() {
     return (
         <View style={styles.container}>
            <Dropdown
-              value={this.state.distance}
+              value={this.props.searchDistance}
               label='Distance'
               data={distanceOptions}
-              onChangeText={(distance) => this.setState({distance})}
+              onChangeText={(distance) => this.props.changeSearchDistance(distance)}
             />
-            <Text>{this.state.distance}</Text>
+            <Text>{this.props.searchDistance}</Text>
         </View>
 
     )
   }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(searchActions, dispatch)
+}
+
+function mapStateToProps() {
+  return {}
 }
 
 const styles = StyleSheet.create({
@@ -38,9 +49,9 @@ const styles = StyleSheet.create({
 
 
 const distanceOptions = [
-  {value: '30', label: 'All'},
-  {value: '2', label: '2 km'},
-  {value: '5', label: '5 km'},
+  {label: 'All', value: '3000' },
+  {label: '2 km', value: '200' },
+  {label: '5 km', value: '500' },
 ]
 
-export default DistanceOption
+export default connect(mapStateToProps, mapDispatchToProps)(DistanceOption)
